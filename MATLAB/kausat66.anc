@@ -1,0 +1,80 @@
+<?xml version="1.0" standalone="yes" ?>
+<ancillary_model_data version = "1.0">
+    <articulations>
+        <articulation name = "body" type = "transform"> 
+            <stage init = "1" max = "1" min = "0" name = "Size" type = "uniformScale" /> 
+            <stage init = "0" max = "360" min = "-360" name = "Roll" type = "xRotate" /> 
+            <stage init = "0" max = "360" min = "-360" name = "Pitch" type = "yRotate" /> 
+            <stage init = "0" max = "360" min = "-360" name = "Yaw" type = "zRotate" /> 
+            <stage init = "0" max = "1000" min = "-1000" name = "MoveX" type = "xTranslate" /> 
+            <stage init = "0" max = "1000" min = "-1000" name = "MoveY" type = "yTranslate" /> 
+            <stage init = "0" max = "1000" min = "-1000" name = "MoveZ" type = "zTranslate" /> 
+            <assigned_nodes>
+                ID2
+            </assigned_nodes>
+</articulation>
+<articulation name = "Spanel1" type = "transform"> 
+            <stage init = "-90" max = "0" min = "-90" name = "Roll" type = "xRotate" /> 
+            <assigned_nodes>
+                ID2763
+            </assigned_nodes>
+	</articulation>
+<articulation name = "Spanel2" type = "transform"> 
+            <stage init = "-90" max = "0" min = "-90" name = "Roll" type = "xRotate" /> 
+            <assigned_nodes>
+                ID393
+            </assigned_nodes>
+	</articulation>
+<articulation name = "Spanel3" type = "transform"> 
+            <stage init = "-90" max = "0" min = "-90" name = "Roll" type = "xRotate" /> 
+            <assigned_nodes>
+                ID1179
+            </assigned_nodes>
+	</articulation>
+<articulation name = "Spanel4" type = "transform"> 
+            <stage init = "-90" max = "0" min = "-90" name = "Roll" type = "xRotate" /> 
+            <assigned_nodes>
+                ID1957
+            </assigned_nodes>
+	</articulation>
+<articulation name = "sband1" type = "transform"> 
+            <stage init = "90" max = "90" min = "0" name = "Roll" type = "xRotate" /> 
+            <assigned_nodes>
+                ID121
+            </assigned_nodes>
+	</articulation>
+<articulation name = "sband2" type = "transform"> 
+            <stage init = "90" max = "90" min = "0" name = "Roll" type = "xRotate" /> 
+            <assigned_nodes>
+                ID257
+            </assigned_nodes>
+	</articulation>
+<articulation name = "Antena1" type = "transform"> 
+            <stage init = "0" max = "1" min = "0" name = "Size" type = "uniformScale" />  
+            <assigned_nodes>
+                ID5
+            </assigned_nodes>
+	</articulation>
+<articulation name = "Antena2" type = "transform"> 
+            <stage init = "0" max = "1" min = "0" name = "Size" type = "uniformScale" />  
+            <assigned_nodes>
+                ID37
+            </assigned_nodes>
+	</articulation>
+<articulation name = "Antena3" type = "transform"> 
+            <stage init = "0" max = "1" min = "0" name = "Size" type = "uniformScale" />  
+            <assigned_nodes>
+                ID63
+            </assigned_nodes>
+	</articulation>
+<articulation name = "Antena4" type = "transform"> 
+            <stage init = "0" max = "1" min = "0" name = "Size" type = "uniformScale" /> 
+            <assigned_nodes>
+                ID89
+            </assigned_nodes>
+	</articulation>
+    </articulations>
+    <pointing_data>
+        <pointing node = "ID2" vector = "0 0 1" />
+    </pointing_data>
+</ancillary_model_data>

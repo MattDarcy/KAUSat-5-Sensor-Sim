@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>0</fileVersion>
+  <configuration>
+    <name>Debug</name>
+    <file>
+      <name>$PROJ_DIR$\TWI_slave.c</name>
+      <outputs>
+        <name>$PROJ_DIR$\Debug\Obj\TWI_slave.r90</name>
+      </outputs>
+      <inputs>
+        <name>$TOOLKIT_DIR$\INC\ioavr.h</name>
+        <name>$TOOLKIT_DIR$\INC\iom16.h</name>
+        <name>$TOOLKIT_DIR$\INC\iomacro.h</name>
+        <name>$TOOLKIT_DIR$\INC\inavr.h</name>
+        <name>$PROJ_DIR$\TWI_slave.h</name>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <name>$PROJ_DIR$\Debug\Obj\main.r90</name>
+      </outputs>
+      <inputs>
+        <name>$TOOLKIT_DIR$\INC\ioavr.h</name>
+        <name>$TOOLKIT_DIR$\INC\iom16.h</name>
+        <name>$TOOLKIT_DIR$\INC\iomacro.h</name>
+        <name>$TOOLKIT_DIR$\INC\inavr.h</name>
+        <name>$PROJ_DIR$\TWI_Slave.h</name>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\standard.dbg</name>
+      <inputs>
+        <name>$TOOLKIT_DIR$\src\template\cfgm16.xcl</name>
+        <name>$TOOLKIT_DIR$\src\template\cfg3s.xcl</name>
+        <name>$PROJ_DIR$\Debug\Obj\TWI_slave.r90</name>
+        <name>$PROJ_DIR$\Debug\Obj\main.r90</name>
+        <name>$TOOLKIT_DIR$\lib\clib\cl3s-ec-sf.r90</name>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[REBUILD_ALL]</name>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+  </configuration>
+</project>
+
+

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>2708402527</fileChecksum>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\Debug\Obj\DAC_Calc_Test.r90</file>
+      <file>$TOOLKIT_DIR$\inc\clib\sysmac.h</file>
+      <file>$PROJ_DIR$\standard\KAUSAT5_Sensor_Simulator.c</file>
+      <file>$TOOLKIT_DIR$\inc\ina90.h</file>
+      <file>$PROJ_DIR$\standard\TWI_slave.c</file>
+      <file>$TOOLKIT_DIR$\inc\clib\math.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\SLAVE311.pbd</file>
+      <file>$PROJ_DIR$\standard\TWI_slave.h</file>
+      <file>$TOOLKIT_DIR$\inc\iom128.h</file>
+      <file>$PROJ_DIR$\Debug\Exe\SLAVE311.dbg</file>
+      <file>$PROJ_DIR$\standard\time.c</file>
+      <file>$PROJ_DIR$\standard\DAC.c</file>
+      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
+      <file>$TOOLKIT_DIR$\lib\clib\cl3s-ec_mul-64.r90</file>
+      <file>$TOOLKIT_DIR$\inc\inavr.h</file>
+      <file>$TOOLKIT_DIR$\inc\comp_a90.h</file>
+      <file>$PROJ_DIR$\standard\process_data.c</file>
+      <file>$PROJ_DIR$\standard\declarations.h</file>
+      <file>$TOOLKIT_DIR$\src\template\cfgm128.xcl</file>
+      <file>$TOOLKIT_DIR$\inc\clib\stdlib.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\KAUSAT5_Sensor_Simulator.r90</file>
+      <file>$TOOLKIT_DIR$\inc\bitdefinitions\iom128.inc</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\DAC_Calc_Test.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\KAUSAT5_Sensor_Simulator.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\clib\stdio.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\stdarg.h</file>
+      <file>$PROJ_DIR$\standard\initializations.c</file>
+      <file>$TOOLKIT_DIR$\inc\clib\string.h</file>
+      <file>$PROJ_DIR$\standard\putchar.c</file>
+      <file>$PROJ_DIR$\DAC_Calc_Test.c</file>
+      <file>$TOOLKIT_DIR$\src\template\cfg3soim.xcl</file>
+      <file>$PROJ_DIR$\Debug\Exe\SLAVE311.d90</file>
+      <file>$TOOLKIT_DIR$\inc\TWI_slave.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\standard\KAUSAT5_Sensor_Simulator.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 24</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8 12 21 3 14 22 15 25 26 1 19 28 5 17 7 11 27 16 29 10 4</file>
+        </tool>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 8 12 21 3 14 22 15 25 26 1 19 28 5 17 7 11 27 16 29 10 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\SLAVE311.dbg</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 18 31 20 13</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 32</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\DAC_Calc_Test.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23</file>
+        </tool>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 0</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8 12 21 3 14 22 15 25 26 1 19 28 5</file>
+        </tool>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 8 12 21 3 14 22 15 25 26 1 19 28 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\SLAVE311.d90</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 18 31 20 13</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+
