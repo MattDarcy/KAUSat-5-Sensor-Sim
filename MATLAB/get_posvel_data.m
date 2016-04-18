@@ -1,5 +1,12 @@
-function [epsec, x_pos, y_pos, z_pos, x_vel, y_vel, z_vel] = get_posvel_data(fid)
+%% Metadata  
+    %  get_posvel_data.m
+    %  KAUSAT-5 Sensor Simulator
+    %
+    %  Copyright (c) 2016 Matt D'Arcy.
+    %  Shared under the MIT License.
+    %
 
+function [epsec, x_pos, y_pos, z_pos, x_vel, y_vel, z_vel] = get_posvel_data(fid)
 
 data_line = fgetl(fid);
 

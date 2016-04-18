@@ -1,5 +1,12 @@
-function [epsec, q1, q2, q3, q4] = get_attitude_data(fid)
+%% Metadata  
+	% get_attitude_data.m
+	%  KAUSAT-5 Sensor Simulator
+    %
+    %  Copyright (c) 2016 Matt D'Arcy.
+    %  Shared under the MIT License.
+    %
 
+function [epsec, q1, q2, q3, q4] = get_attitude_data(fid)
 
 att_line = fgetl(fid);
 
