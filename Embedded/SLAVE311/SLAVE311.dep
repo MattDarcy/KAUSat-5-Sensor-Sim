@@ -10,13 +10,13 @@
       <file>$TOOLKIT_DIR$\inc\clib\sysmac.h</file>
       <file>$PROJ_DIR$\standard\KAUSAT5_Sensor_Simulator.c</file>
       <file>$TOOLKIT_DIR$\inc\ina90.h</file>
-      <file>$PROJ_DIR$\standard\TWI_slave.c</file>
-      <file>$TOOLKIT_DIR$\inc\clib\math.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\SLAVE311.pbd</file>
-      <file>$PROJ_DIR$\standard\TWI_slave.h</file>
       <file>$TOOLKIT_DIR$\inc\iom128.h</file>
-      <file>$PROJ_DIR$\Debug\Exe\SLAVE311.dbg</file>
       <file>$PROJ_DIR$\standard\time.c</file>
+      <file>$PROJ_DIR$\Debug\Exe\SLAVE311.dbg</file>
+      <file>$PROJ_DIR$\standard\TWI_slave.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\SLAVE311.pbd</file>
+      <file>$TOOLKIT_DIR$\inc\clib\math.h</file>
+      <file>$PROJ_DIR$\standard\TWI_slave.c</file>
       <file>$PROJ_DIR$\standard\DAC.c</file>
       <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
       <file>$TOOLKIT_DIR$\lib\clib\cl3s-ec_mul-64.r90</file>
@@ -39,7 +39,6 @@
       <file>$PROJ_DIR$\DAC_Calc_Test.c</file>
       <file>$TOOLKIT_DIR$\src\template\cfg3soim.xcl</file>
       <file>$PROJ_DIR$\Debug\Exe\SLAVE311.d90</file>
-      <file>$TOOLKIT_DIR$\inc\TWI_slave.h</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\standard\KAUSAT5_Sensor_Simulator.c</name>
@@ -48,15 +47,19 @@
           <name>BICOMP</name>
           <file> 24</file>
         </tool>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 20</file>
+        </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 8 12 21 3 14 22 15 25 26 1 19 28 5 17 7 11 27 16 29 10 4</file>
+          <file> 4 12 21 3 14 22 15 25 26 1 19 28 9 17 7 11 27 16 29 5 10</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 8 12 21 3 14 22 15 25 26 1 19 28 5 17 7 11 27 16 29 10 4</file>
+          <file> 4 12 21 3 14 22 15 25 26 1 19 28 9 17 7 11 27 16 29 5 10</file>
         </tool>
       </inputs>
     </file>
@@ -93,11 +96,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 8 12 21 3 14 22 15 25 26 1 19 28 5</file>
+          <file> 4 12 21 3 14 22 15 25 26 1 19 28 9</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 8 12 21 3 14 22 15 25 26 1 19 28 5</file>
+          <file> 4 12 21 3 14 22 15 25 26 1 19 28 9</file>
         </tool>
       </inputs>
     </file>
