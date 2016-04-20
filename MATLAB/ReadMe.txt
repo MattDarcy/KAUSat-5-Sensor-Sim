@@ -22,7 +22,7 @@ KAUSAT-5 3D model and articulation files for STK:
   
 #Notes:
 
-    Created with MATLAB 2012B
+    Created with MATLAB 2012B and STK10
     User must have following files and path referenced in code: kausat66.dae model and kausat66.anc articulation files
     User must have additional 3 function files and 2 STK data textfiles included in path.
         
