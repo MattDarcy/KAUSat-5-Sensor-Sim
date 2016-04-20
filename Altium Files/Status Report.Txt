@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : PCB Document [ADCS_Sensor_Simulator2.PcbDoc]
+   Generated File[ADCS_Sensor_Simulator2.TXT]
+   Generated File[ADCS_Sensor_Simulator2.LDP]
+   Generated File[ADCS_Sensor_Simulator2.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 12:50:44 PM On 2/12/2015
