@@ -1,4 +1,4 @@
-"C:\Users\Administrator\Dropbox\SENSOR SIM CODE IN PROGRESS\Sensor Sim\MASTER315\MASTER_MAIN.c"
+"C:\Users\Administrator\Documents\GitHub\KAUSat-5-Sensor-Sim\Embedded\MASTER315\MASTER_MAIN.c"
 -std=c99
 -ferror-limit=100
 -I
@@ -281,8 +281,8 @@ C:\Program Files (x86)\IAR Systems\Embedded Workbench 6.5\avr\inc\clib
 -D__PLAIN_INT_BITFIELD_IS_SIGNED__=1
 -D__HAS_LOCATED_DECLARATION__=1
 -D__IAR_COMPILERBASE__=593417
--D__DATE__="Jul 13 2015"
--D__TIME__="18:32:05"
+-D__DATE__="Apr 20 2016"
+-D__TIME__="18:02:03"
 -D__STDC__=1
 -D__STDC_VERSION__=199901L
 -D__STDC_HOSTED__=1

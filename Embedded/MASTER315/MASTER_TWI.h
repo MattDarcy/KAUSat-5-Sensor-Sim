@@ -25,8 +25,17 @@
 
 
 /****************************************************************************
-  TWI Status/Control register definitions
+MASTER_TWI.h
+Refactored for KAUSAT-5 Sensor Simulator
+Refactored by Matt D'Arcy. 
 ****************************************************************************/
+
+
+/****************************************************************************
+TWI Status/Control register definitions
+****************************************************************************/
+
+
 #define TWI_BUFFER_SIZE 4   // Set this to the largest message size that will be sent including address byte.                            //Set buffer size to 4, this will need to be changed for larger applications (ADCS simulator)
 
 #define TWI_TWBR            0x0C        // TWI Bit rate Register setting.                                                                //TWI_TWBR is defined as 0x0C or 0000 1100, 12 as before. 
@@ -39,9 +48,11 @@
 // Not used defines!
 //#define TWI_TWPS          0x00        // This driver presumes prescaler = 00
 
+
 /****************************************************************************
-  Global definitions
+Global definitions
 ****************************************************************************/
+
 
 union TWI_statusReg                                                                               
 // Status byte holding flags.                                                                                                            //Need to find out what this does. 
@@ -59,8 +70,10 @@ extern union TWI_statusReg TWI_statusReg;                                       
                                                                                                                                          //This seems wholly redundant.
 
 /****************************************************************************
-  Function definitions
+Function definitions
 ****************************************************************************/
+
+
 void TWI_Master_Initialise( void );                                                                                                      //Define function that will be worked through in TWI_Master.c
 unsigned char TWI_Transceiver_Busy( void );                                                                                              //Define function that will be worked through in TWI_Master.c
 unsigned char TWI_Get_State_Info( void );                                                                                                //Define function that will be worked through in TWI_Master.c
@@ -68,18 +81,24 @@ void TWI_Start_Transceiver_With_Data( unsigned char * , unsigned char );        
 void TWI_Start_Transceiver( void );                                                                                                      //Define function that will be worked through in TWI_Master.c
 unsigned char TWI_Get_Data_From_Transceiver( unsigned char *, unsigned char );                                                           //Define function that will be worked through in TWI_Master.c
 
+
 /****************************************************************************
-  Bit and byte definitions
+Bit and byte definitions
 ****************************************************************************/
+
+
 #define TWI_READ_BIT  0       // Bit position for R/W bit in "address byte".                                                             //In address byte, we want to know read/write direction. This is the 0th bit, so define this here
 #define TWI_ADR_BITS  1       // Bit position for LSB of the slave address bits in the init byte.                                        //Shortcut for defining the address bits by only saying the least-significant bit is Bit 1.
 
 #define TRUE          1                                                                                                                  //Define True as 1 
 #define FALSE         0                                                                                                                  //Define False as 0
 
+
 /****************************************************************************
-  TWI State codes                                                                                                                        //These are the status codes of TWSR from the book. 
+TWI State codes                                                                                                                        //These are the status codes of TWSR from the book. 
 ****************************************************************************/
+
+
 // General TWI Master status codes                      
 #define TWI_START                  0x08  // START has been transmitted  
 #define TWI_REP_START              0x10  // Repeated START has been transmitted

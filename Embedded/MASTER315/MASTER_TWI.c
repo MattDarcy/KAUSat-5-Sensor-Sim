@@ -23,6 +23,14 @@
 *
 ****************************************************************************/
 
+
+/****************************************************************************
+MASTER_TWI.c
+Refactored for KAUSAT-5 Sensor Simulator
+Refactored by Matt D'Arcy. 
+****************************************************************************/
+
+
 #include "ioavr.h"                                                                                                                      // include the ioavr.h file. This is a file telling the controller to load its specific iom.h
                                                                                                                                         //includes iom128.h, iom128.inc, iomacro.h and sets up ATMEGA128 registers
 #include "inavr.h"                                                                                                                      //includes inavr.h file, which includes intrinsics.h, which has many C language things such as
@@ -51,6 +59,8 @@ void ms_delay(unsigned int cnt) //Set a small delay so that clean packets are pr
 Call this function to set up the TWI master to its initial standby state.
 Remember to enable interrupts from the main application after initializing the TWI.
 ****************************************************************************/
+
+
 void TWI_Master_Initialise(void)                                                                                                        //Initialize TWI for Master device.
 {
   TWBR = TWI_TWBR;                                  // Set bit rate register (Baudrate). Defined in header file.                        //Actually set TWBR to the value we defined in TWI_Master.h (redundant)
@@ -62,9 +72,12 @@ void TWI_Master_Initialise(void)                                                
          (0<<TWWC);                                 //                                                                                  //
 }    
     
+
 /****************************************************************************
 Call this function to test if the TWI_ISR is busy transmitting.
 ****************************************************************************/
+
+
 unsigned char TWI_Transceiver_Busy( void )
 {
   return ( TWCR & (1<<TWIE) );                  // IF TWI Interrupt is enabled then the Transceiver is busy                             //This is like how we waited for TWINT to be set to 1. 
@@ -72,17 +85,21 @@ unsigned char TWI_Transceiver_Busy( void )
                                                                                                                                         //for as long as TWINT flag is high (1). Upon interrupt (TWINT --> 0) status code is obtainable.
 }
 
+
 /****************************************************************************
 Call this function to fetch the state information of the previous operation. The function will hold execution (loop)
 until the TWI_ISR has completed with the previous operation. If there was an error, then the function 
 will return the TWI State code. 
 ****************************************************************************/
+
+
 unsigned char TWI_Get_State_Info( void )                                                                                                //Some calls in the main.c folder
 {
   while ( TWI_Transceiver_Busy() );                                                                                                     // Wait until TWI has completed the transmission.                             
   return ( TWI_state );                                                                                                                 // TWI_state is sometimes set to 0xF8 and by default set to TWSR (if all is working and 
                                                                                                                                         // a status code was obtainable)
 }
+
 
 /****************************************************************************
 Call this function to send a prepared message. The first byte must contain the slave address and the
@@ -91,6 +108,8 @@ from the slave. Also include how many bytes that should be sent/read including t
 The function will hold execution (loop) until the TWI_ISR has completed with the previous operation,
 then initialize the next operation and return.
 ****************************************************************************/
+
+
 void TWI_Start_Transceiver_With_Data( unsigned char *msg, unsigned char msgSize )                                                       //the function to begin transceiver with data takes pointer and size
 {
   unsigned char temp;                                                                                                                   // 
@@ -114,11 +133,14 @@ void TWI_Start_Transceiver_With_Data( unsigned char *msg, unsigned char msgSize 
          (0<<TWWC);                             //                                                                                      //
 }
 
+
 /****************************************************************************
 Call this function to resend the last message. The driver will reuse the data previously put in the transceiver buffers.
 The function will hold execution (loop) until the TWI_ISR has completed with the previous operation,
 then initialize the next operation and return.
 ****************************************************************************/
+
+
 void TWI_Start_Transceiver( void )                                                                                                      //Resend the data that was put into buffer (it is still there) 
 {
   while ( TWI_Transceiver_Busy() );                                                                                                     // Wait until TWI is ready for next transmission.
@@ -130,6 +152,7 @@ void TWI_Start_Transceiver( void )                                              
          (0<<TWWC);                             //                                                                                      //
 }
 
+
 /****************************************************************************
 Call this function to read out the requested data from the TWI transceiver buffer. I.e. first call
 TWI_Start_Transceiver to send a request for data to the slave. Then Run this function to collect the
@@ -138,6 +161,8 @@ requested (including the address field) in the function call. The function will 
 until the TWI_ISR has completed with the previous operation, before reading out the data and returning.
 If there was an error in the previous transmission the function will return the TWI error code.
 ****************************************************************************/
+
+
 unsigned char TWI_Get_Data_From_Transceiver( unsigned char *msg, unsigned char msgSize )                                                //pointer to where to place the data and the number of bytes requested
 {                                                                                                                                       //(including the address field in the msgSize)
   unsigned char i;                                                                                                                      //used for unloading buffer
@@ -154,12 +179,15 @@ unsigned char TWI_Get_Data_From_Transceiver( unsigned char *msg, unsigned char m
   return( TWI_statusReg.lastTransOK );                                                                                                  //return the TWI_statusReg.lastTransOK value                            
 }
 
+
 // ********** Interrupt Handlers ********** //
 /****************************************************************************
 This function is the Interrupt Service Routine (ISR), and called when the TWI interrupt is triggered;
 that is whenever a TWI event has occurred. This function should not be called directly from the main
 application.
 ****************************************************************************/
+
+
 #pragma vector=TWI_vect                                                                                                                 //TWI_vect is defined in iom128.h as 0x84
 __interrupt void TWI_ISR(void)                                                                                                          //this is an interrupt routine called TWI_ISR
 {
@@ -256,7 +284,7 @@ __interrupt void TWI_ISR(void)                                                  
     case TWI_MRX_ADR_NACK:      // SLA+R has been tramsmitted and NACK received                                                         //As defined in TWI_Master.h = 0x48
       
     case TWI_MTX_DATA_NACK:     // Data byte has been tramsmitted and NACK received                                                     //As defined in TWI_Master.h = 0x30
-//    case TWI_NO_STATE              // No relevant state information available; TWINT = “0”                                            //As defined in TWI_Master.h = 0xF8
+    //case TWI_NO_STATE              // No relevant state information available; TWINT = “0”                                            //As defined in TWI_Master.h = 0xF8
       
     case TWI_BUS_ERROR:         // Bus error due to an illegal START or STOP condition                                                  //As defined in TWI_Master.h = 0x00
       

@@ -24,6 +24,14 @@
 *
 ****************************************************************************/
 
+
+/****************************************************************************
+MASTER_MAIN.c
+Refactored for KAUSAT-5 Sensor Simulator
+Refactored by Matt D'Arcy. 
+****************************************************************************/
+
+
 #include <ioavr.h>                                                                                              //Redundant, already in TWI_Master.c
 #include <inavr.h>                                                                                              //Redundant, already in TWI_Master.c  
 //#include "MASTER_TWI.h"   
