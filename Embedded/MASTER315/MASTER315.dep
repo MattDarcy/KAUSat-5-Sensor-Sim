@@ -8,19 +8,19 @@
     <outputs>
       <file>$PROJ_DIR$\Debug\Obj\MASTER_MAIN.r90</file>
       <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$PROJ_DIR$\MASTER_MAIN.c</file>
       <file>$TOOLKIT_DIR$\inc\clib\stdarg.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\MASTER_TWI.r90</file>
-      <file>$TOOLKIT_DIR$\inc\clib\sysmac.h</file>
-      <file>$PROJ_DIR$\Debug\Exe\MASTER315.a90</file>
-      <file>$TOOLKIT_DIR$\lib\clib\cl3s-ec_mul.r90</file>
-      <file>$PROJ_DIR$\TWI_Master.h</file>
       <file>$TOOLKIT_DIR$\src\template\cfg3soim.xcl</file>
-      <file>$TOOLKIT_DIR$\src\template\cfgm128.xcl</file>
       <file>$PROJ_DIR$\MASTER_TWI.c</file>
+      <file>$TOOLKIT_DIR$\src\template\cfgm128.xcl</file>
+      <file>$PROJ_DIR$\TWI_Master.h</file>
+      <file>$TOOLKIT_DIR$\lib\clib\cl3s-ec_mul.r90</file>
+      <file>$PROJ_DIR$\Debug\Exe\MASTER315.a90</file>
+      <file>$TOOLKIT_DIR$\inc\clib\sysmac.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\MASTER_TWI.r90</file>
       <file>$PROJ_DIR$\MASTER_TWI.h</file>
       <file>$PROJ_DIR$\Debug\Obj\MASTER_MAIN.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\MASTER_TWI.pbi</file>
-      <file>$PROJ_DIR$\MASTER_MAIN.c</file>
       <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
       <file>$TOOLKIT_DIR$\inc\ioavr.h</file>
       <file>$PROJ_DIR$\Debug\Obj\MASTER315.pbd</file>
@@ -35,39 +35,11 @@
       <file>$PROJ_DIR$\Debug\Exe\MASTER315.dbg</file>
     </outputs>
     <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 5 26</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\MASTER_TWI.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 13</file>
-        </tool>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 3</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 16 21 15 24 19 1 11</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
       <name>$PROJ_DIR$\MASTER_MAIN.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 12</file>
+          <file> 13</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
@@ -77,13 +49,41 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 16 21 15 24 19 1 22 2 4 10 11</file>
+          <file> 16 21 15 24 19 1 22 3 10 5 12</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 16 21 15 24 19 1 22 2 4 10 11</file>
+          <file> 16 21 15 24 19 1 22 3 10 5 12</file>
         </tool>
       </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\MASTER_TWI.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14</file>
+        </tool>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 16 21 15 24 19 1 12</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 9 26</file>
+        </tool>
+      </outputs>
     </file>
     <file>
       <name>$PROJ_DIR$\main.c</name>
@@ -100,11 +100,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 16 21 15 24 19 1 22 2 4 23 7</file>
+          <file> 16 21 15 24 19 1 22 3 10 23 7</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 16 21 15 24 19 1 22 2 4 23 7</file>
+          <file> 16 21 15 24 19 1 22 3 10 23 7</file>
         </tool>
       </inputs>
     </file>
@@ -113,13 +113,13 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 5</file>
+          <file> 9</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 9 8 0 6</file>
+          <file> 6 4 0 8</file>
         </tool>
       </inputs>
     </file>
