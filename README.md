@@ -21,6 +21,5 @@ To open in IAREW, open MASTER315.eww in Embedded/MASTER315
 To see individual .c and .h files, go to Embedded/MASTER315
 
 #KAUSAT-5
-Lab's Facebook - https://www.facebook.com/ssrlmm/
-
+[Lab's Facebook](https://www.facebook.com/ssrlmm/)  
 © 2016 [Matt D'Arcy](https://www.linkedin.com/in/mmdarcy), shared under the [MIT License](http://www.opensource.org/licenses/MIT).
