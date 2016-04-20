@@ -1,34 +1,24 @@
 /****************************************************************************
-//
-// File              : KAUSAT5_Sensor_Simulator.c
-// Compiler          : //IAR EWAAVR 2.28a/3.10c
-// Revision          : $Revision: 1.0 $
-// Date              : //$Date: Monday, May 24, 2004 09:32:18 UTC $
-// Updated by        : $Author: Matthew D'Arcy $
-//
-// Support mail      : matthew.d'arcy@nasa-academy.org
-//
-// Supported devices : Simulator board with ATMega128, 13x LTC2630 DAC chips, KAUSAT5 ADCS Board.
-//                     
-// AppNote           : //AVR311 - TWI Slave Implementation
-//
-// Description       : //Example of how to use the driver for TWI slave 
-//                     communication.
-//
+KAUSAT5_Sensor_Simulator.c
+KAUSAT-5 Sensor Simulator
+Copyright (c) 2016 Matt D'Arcy. 
+Shared under the MIT License.
 ****************************************************************************/
 
 
 /****************************************************************************
-// We want to parse 16 different floating point numbers each packet. They are the az and el of all 5 sun sensors, and the xyz of magnetic, and xyz of gyromag
-// 143-char SAMPLE PACKET:
-// $,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#####.##,_#####.##,_#####.##,_###.####,_###.####,_###.####@
-// 0th char is $, the last character is 141, null character is 143, and the total size is 144
+We want to parse 16 different floating point numbers each packet. They are the az and el of all 5 sun sensors, and the xyz of magnetic, and xyz of gyromagnitude
+143-char SAMPLE PACKET:
+$,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#####.##,_#####.##,_#####.##,_###.####,_###.####,_###.####@
+0th char is $, the last character is 141, null character is 143, and the total size is 144
 ****************************************************************************/
 
 
 /****************************************************************************
-//  Include system architecture, header and source files
+Include system architecture, header and source files
 ****************************************************************************/
+
+
 #include <iom128.h>
 #include <ina90.h>
 #include <stdio.h>
@@ -45,36 +35,52 @@
 #include "putchar.c"
 #include "time.c"
 #include "TWI_slave.c"
+
+
 /****************************************************************************
-//  Main Routine
+Main Routine
 ****************************************************************************/
+
+
 int main(void)
 { 
   init_UART();
   printf("\nUART Initialized\n\r");
   init_SPI();
   printf("SPI Initialized\n\r");
+  
+// Initialize all 13 DAC chips and then leave all SS pins HI
+  
   init_DAC();
-  printf("DAC Initialized\n\r");               //Initialize all 13 DAC chips and then leave all SS pins HI
+  printf("DAC Initialized\n\r");               
   printf("DAC Count: 13\n\r");
   TWI_Slave_Initialise( (TWI_slaveAddress<<TWI_ADR_BITS) | (TRUE<<TWI_GEN_BIT) );
   TWI_Start_Transceiver();
   printf("TWI Initialized\n\r");
   printf("Awaiting Serial Data\n\n\r");
   __enable_interrupt();
-  // Initialise TWI module for slave operation. Include address and/or enable General Call.
-  TWI_Slave_Initialise( (TWI_slaveAddress<<TWI_ADR_BITS) | (TRUE<<TWI_GEN_BIT) );      //Initialize TWI for slave operation.
+
+// Initialize TWI module for slave operation. Include address and/or enable General Call.
+  
+  TWI_Slave_Initialise( (TWI_slaveAddress<<TWI_ADR_BITS) | (TRUE<<TWI_GEN_BIT) );      
   TWI_Start_Transceiver(); 
   
  
-  for(;;){ 
-          while(pure_transmissions_only == 0); //wait for the flag to be set to 1 by the UART interrupt, allowing TWI to commence for a given data packet.
-          if((!TWI_Transceiver_Busy()) && TWI_statusReg.lastTransOK){
-          //TWI_statusReg.all = 0; 
-          TWI_statusReg.all = 0;                      //Clear status register
-          TWI_Start_Transceiver_With_Data(&temp2, 1); //Put temp2 in the transceiver (send it)
-          //printf("Sent 0x%X\n\n\r",temp2);
-          }     
+  for(;;){
+    
+// Wait for the flag to be set to 1 by the UART interrupt, allowing TWI to commence for a given data packet.
+    while(pure_transmissions_only == 0); 
+      if((!TWI_Transceiver_Busy()) && TWI_statusReg.lastTransOK){
+            
+// Clear status register
+            
+        TWI_statusReg.all = 0;    
+    
+// Put temp2 in the transceiver (send it)            
+            
+        TWI_Start_Transceiver_With_Data(&temp2, 1); 
+        //printf("Sent 0x%X\n\n\r",temp2);
+      }     
    }
 }
 

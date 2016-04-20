@@ -2,7 +2,7 @@
 %  KAUSAT-5 Sensor Simulator
 %
 %  Copyright (c) 2016 Matt D'Arcy.
-%  Copyright (c) 2015 Seecret. Shared under the MIT License.
+%  Shared under the MIT License.
 %
 
 %% Readme

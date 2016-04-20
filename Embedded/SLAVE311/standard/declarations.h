@@ -1,10 +1,22 @@
+/****************************************************************************
+declarations.h
+KAUSAT-5 Sensor Simulator
+Copyright (c) 2016 Matt D'Arcy. 
+Shared under the MIT License.
+****************************************************************************/
+
+
 #ifndef DECLARATIONS_H
 #define DECLARATIONS_H
 
+
 /****************************************************************************
-//  Variable definitions
+Variable definitions
 ****************************************************************************/
+
+
 // Sample TWI transmission commands
+
 #define TWI_CMD_MASTER_WRITE 0x10                                                                                                                                       //internally stored hex values for a write command
 #define TWI_CMD_MASTER_READ  0x20                                                                                                                                       //internally stored hex values for a read command
 
@@ -19,12 +31,17 @@ float gyroz_now_deg = 0;
 volatile unsigned long int gyroz_now_check = 0;
 unsigned char messageBuf[4];                                                                                                                                          //message buffer 0---1---2---3 with 3 as null char. Each space is 1 byte (1 char)
 unsigned char temp, temp2;                                                                                                                                            //more chars
+
 // Own TWI slave address
+
 unsigned int TWI_slaveAddress = 0x10;                                                                                                                                 //arbitration of slave address 0001 0000
 
+
 /****************************************************************************
-//  Declare variables for SPI
+Declare variables for SPI
 ****************************************************************************/
+
+
 unsigned int mm,mmh,mml;
 
 #define SS_A1 PORTD_Bit4
@@ -78,17 +95,22 @@ unsigned int gyroxhex,GYROXHI,GYROXLO;
 unsigned int gyroyhex,GYROYHI,GYROYLO;
 unsigned int gyrozhex,GYROZHI,GYROZLO;
 
+
 /****************************************************************************
-//  Declare variables for function: Parsing()
+Declare variables for function: Parsing()
 ****************************************************************************/
+
+
 char packet_data[144]; //declare string variable for the packet, 143 characters plus the null = 144
 char data; //this is a 1 character string that will extract the packet from UDR1 character by character in a loop
 char null[23]; //out of sensor view - 22 characters beginning at 0 (0 to 21) + null (character 22) is size of 23
 int save_on, ii = 0; //define integer save_on which will tell the program that the packet_data array still has characters to fill from the received packet, and the ii is each incremented character space of packet_data
 
+
 /****************************************************************************
 //  Declare variables used in maintaining pure TWI transmissions
 ****************************************************************************/
+
 
 char packet_buff1[144] = "unused"; //buffer variable for storing packets. Without it, the data packets switch during transmission to external hardware, creating botched data.
 char packet_buff2[144] = "unused"; //buffer variable for storing packets. Without it, the data packets switch during transmission to external hardware, creating botched data.
@@ -99,10 +121,15 @@ int pure_transmissions_only = 0; //TWI data transmission of the 6 bytes can only
 								 //set to 1 a certain delay (try 200 milliseconds) from the instant the new packet has been extracted into the packet_data variable. After the 0x48 (GYROZLO) has
 								 //been transmitted, the flag can be reset to 0
 int current_command = 0;
+
+
 /****************************************************************************
 //  Declare strings for sensor data for function: Parsing()
 ****************************************************************************/
+
+
 //SUN SENSOR ANGLES, _#.#### with null char = 10
+
 char sunaz1[8];
 char sunel1[8];
 char sunaz2[8];
@@ -113,11 +140,15 @@ char sunaz4[8];
 char sunel4[8];
 char sunaz5[8];
 char sunel5[8];
+
 //MAGNETIC SENSOR VECTOR MAGNITUDES, _#####.## with null char =10
+
 char magx[10];
 char magy[10];
 char magz[10];
+
 //GYROMAG X,Y,Z, _###.#### with null char = 10
+
 char gyrox[10];
 char gyroy[10];
 char gyroz[10];
@@ -127,26 +158,34 @@ char gyroz[10];
 //  Declare floats for sensor data _before and _now for previous and current 
 //  iteration, respectively for function: Parsing()
 ****************************************************************************/
+
+
 //SUN SENSOR ANGLES
+
 volatile float sunaz1_before,sunaz1_now,sunel1_before,sunel1_now = 0;
 volatile float sunaz2_before,sunaz2_now,sunel2_before,sunel2_now = 0;
 volatile float sunaz3_before,sunaz3_now,sunel3_before,sunel3_now = 0;
 volatile float sunaz4_before,sunaz4_now,sunel4_before,sunel4_now = 0;
 volatile float sunaz5_before,sunaz5_now,sunel5_before,sunel5_now = 0;
+
 //MAGNETIC SENSOR VECTOR MAGNITUDES
+
 volatile float magx_before, magx_now = 0;
 volatile float magy_before, magy_now = 0;
 volatile float magz_before, magz_now = 0;
+
 //GYROMAG X,Y,Z
+
 volatile float gyrox_before, gyrox_now = 0;
 volatile float gyroy_before, gyroy_now = 0;
 volatile float gyroz_before, gyroz_now = 0;
 
 
-
 /****************************************************************************
   NON-TWI Function definitions
 ****************************************************************************/
+
+
 void init_UART(void);
 void init_SPI(void);
 void init_DAC(void);

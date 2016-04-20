@@ -23,6 +23,13 @@
 ****************************************************************************/
  
 
+/****************************************************************************
+TWI_slave.c
+Refactored for KAUSAT-5 Sensor Simulator
+Refactored by Matt D'Arcy. 
+****************************************************************************/
+
+
 static unsigned char TWI_buf[TWI_BUFFER_SIZE];                                                                                                  // Transceiver buffer. Set the size in the header file                                       
 static unsigned char TWI_msgSize  = 0;                                                                                                          // Number of bytes to be transmitted.
 static unsigned char TWI_state    = TWI_NO_STATE;                                                                                               // State byte. Default set to TWI_NO_STATE (0xF8)
@@ -30,6 +37,7 @@ static unsigned char TWI_state    = TWI_NO_STATE;                               
 static unsigned char TWI_busy = 0;                                                                                                              // From Giyeon's code
 
 union TWI_statusReg TWI_statusReg = {0};                                                                                                        // TWI_statusReg is defined in TWI_Slave.h
+
 
 /****************************************************************************
 Call this function to set up the TWI slave to its initial standby state.
@@ -40,6 +48,8 @@ TWI_Slave_Initialise( (TWI_slaveAddress<<TWI_ADR_BITS) | (TRUE<<TWI_GEN_BIT) );
 The TWI module is configured to NACK on any requests. Use a TWI_Start_Transceiver function to 
 start the TWI.
 ****************************************************************************/
+
+
 void TWI_Slave_Initialise( unsigned char TWI_ownAddress )
 {
   TWAR = TWI_ownAddress;                                                                                                                        // Set own TWI slave address. Accept TWI General Calls.
@@ -55,6 +65,8 @@ void TWI_Slave_Initialise( unsigned char TWI_ownAddress )
 /****************************************************************************
 Call this function to test if the TWI_ISR is busy transmitting.
 ****************************************************************************/
+
+
 unsigned char TWI_Transceiver_Busy( void )                                                                                                      //Equivalent of wait for TWINT bit set. 
 {
   return TWI_busy;                  // IF TWI interrupt is enabled then the Transceiver is busy
@@ -66,6 +78,8 @@ Call this function to fetch the state information of the previous operation. The
 until the TWI_ISR has completed with the previous operation. If there was an error, then the function 
 will return the TWI State code. 
 ****************************************************************************/
+
+
 unsigned char TWI_Get_State_Info( void )                                                                                                        //Go through a series of hoops to get TWSR and return it
 {
   while ( TWI_Transceiver_Busy() );             // Wait until TWI has completed the transmission.
@@ -81,6 +95,8 @@ Address byte is not included in the message buffers.
 The function will hold execution (loop) until the TWI_ISR has completed with the previous operation,
 then initialize the next operation and return.
 ****************************************************************************/
+
+
 void TWI_Start_Transceiver_With_Data( unsigned char *msg, unsigned char msgSize )                                                               //inputs of pointer to memory where msg is, and msg size in bytes
 {
   unsigned char temp;                                                                                           
@@ -106,6 +122,8 @@ a transmission, or just starting the transceiver for reception. The driver will 
 in the transceiver buffers. The function will hold execution (loop) until the TWI_ISR has completed with the 
 previous operation, then initialize the next operation and return.
 ****************************************************************************/
+
+
 void TWI_Start_Transceiver( void )                                                                                                              //If data is already in buffer, just start the transceiver
 {
   while ( TWI_Transceiver_Busy() );             // Wait until TWI is ready for next transmission.
@@ -127,6 +145,8 @@ to fetch in the function call. The function will hold execution (loop) until the
 with the previous operation, before reading out the data and returning.
 If there was an error in the previous transmission the function will return the TWI State code.
 ****************************************************************************/
+
+
 unsigned char TWI_Get_Data_From_Transceiver( unsigned char *msg, unsigned char msgSize )                                                        //If not busy and last transmission ok, extract contents of buffer to variable msg
 {
   unsigned char i;
@@ -166,6 +186,8 @@ This function is the Interrupt Service Routine (ISR), and called when the TWI in
 that is whenever a TWI event has occurred. This function should not be called directly from the main
 application.
 ****************************************************************************/
+
+
 #pragma vector=TWI_vect
 __interrupt void TWI_ISR( void )                                                                                                                //Switch-case - flows through each line until a break encountered.                                                                                                                                                //Code in between start/breaks/end is all one scenario
 {

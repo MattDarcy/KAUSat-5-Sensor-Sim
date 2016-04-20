@@ -1,9 +1,16 @@
-
+/****************************************************************************
+initializations.c
+KAUSAT-5 Sensor Simulator
+Copyright (c) 2016 Matt D'Arcy. 
+Shared under the MIT License.
+****************************************************************************/
 
 
 /****************************************************************************
-//  Initialize UART
+Initialize UART
 ****************************************************************************/
+
+
 void init_UART(void) //Set desired registers according to the ATMEGA128 Datasheet
 {
     UCSR0A = 0x00;
@@ -15,27 +22,30 @@ void init_UART(void) //Set desired registers according to the ATMEGA128 Datashee
 
 
 /****************************************************************************
-//  Initialize SPI
+Initialize SPI
 ****************************************************************************/
+
+
 void init_SPI(void) //function to initialize the SPI on the ATMEGA128
 { 
-  //PORTD_Bit4 DIR (X) PORT ON (X)
-  //PORTD_Bit6 DIR (X) PORT ON (X)
-  //PORTD_Bit2 DIR (X) PORT ON (X)
-  //PORTD_Bit3 DIR (X) PORT ON (X)
-  //PORTG_Bit3 DIR (X) PORT ON (X)
-  //PORTG_Bit4 DIR (X) PORT ON (X)
-  //PORTB_Bit3 DIR (X) PORT ON (X)
-  //PORTB_Bit4 DIR (X) PORT ON (X)
-  //PORTE_Bit5 DIR (X) PORT ON (X)
-  //PORTB_Bit0 DIR (X) PORT ON (X)
-  //PORTE_Bit4 DIR (X) PORT ON (X)
-  //PORTE_Bit3 DIR (X) PORT ON (X)
-  //PORTE_Bit2 DIR (X) PORT ON (X)
-  //SCK PB1    DIR (X) PORT ON (X)
-  //SDI PB2    DIR (X) PORT ON (X)
-  //Set data directions and activation of pins (1 is output from ATMega, 1 is ON)
-  //Note that Pins D0 and D1 are SCL and SDA for TWI, respectively and if TWI errors happen later, alter these.
+//PORTD_Bit4 DIR (X) PORT ON (X)
+//PORTD_Bit6 DIR (X) PORT ON (X)
+//PORTD_Bit2 DIR (X) PORT ON (X)
+//PORTD_Bit3 DIR (X) PORT ON (X)
+//PORTG_Bit3 DIR (X) PORT ON (X)
+//PORTG_Bit4 DIR (X) PORT ON (X)
+//PORTB_Bit3 DIR (X) PORT ON (X)
+//PORTB_Bit4 DIR (X) PORT ON (X)
+//PORTE_Bit5 DIR (X) PORT ON (X)
+//PORTB_Bit0 DIR (X) PORT ON (X)
+//PORTE_Bit4 DIR (X) PORT ON (X)
+//PORTE_Bit3 DIR (X) PORT ON (X)
+//PORTE_Bit2 DIR (X) PORT ON (X)
+//SCK PB1    DIR (X) PORT ON (X)
+//SDI PB2    DIR (X) PORT ON (X)
+//Set data directions and activation of pins (1 is output from ATMega, 1 is ON)
+//Note that Pins D0 and D1 are SCL and SDA for TWI, respectively and if TWI errors happen later, alter these.
+  
   DDRB = (1 << DDB7) | (1 << DDB6) | (1 << DDB5) | (1 << DDB4) | (1 << DDB3) | (1 << DDB2) | (1 << DDB1) | (1 << DDB0); 
   DDRD = (1 << DDD7) | (1 << DDD6) | (1 << DDD5) | (1 << DDD4) | (1 << DDD3) | (1 << DDD2) | (1 << DDD1) | (1 << DDD0);
   DDRE = (1 << DDE7) | (1 << DDE6) | (1 << DDE5) | (1 << DDE4) | (1 << DDE3) | (1 << DDE2) | (1 << DDE1) | (1 << DDE0);
@@ -50,28 +60,31 @@ void init_SPI(void) //function to initialize the SPI on the ATMEGA128
 
 }
 
+
 /****************************************************************************
-//  Initialize DAC Chip
+Initialize DAC Chip
 ****************************************************************************/
+
+
 void init_DAC(void) //this bit of the code initializes the DAC
 { 
-  //We need to initialize all 13 DAC chips. drive low, initialize, drive high, move on to the next one
-  //#define SS_A1 PORTE_Bit3 --> PORTD_Bit4 --> Chip 1
-  //#define SS_E1 PORTE_Bit2 --> PORTD_Bit6 --> Chip 2
-  //#define SS_A2 PORTE_Bit5 --> PORTD_Bit2 --> Chip 3
-  //#define SS_E2 PORTE_Bit4 --> PORTD_Bit3 --> Chip 4
-  //#define SS_A3 PORTE_Bit7 --> PORTG_Bit3 --> Chip 5
-  //#define SS_E3 PORTE_Bit6 --> PORTG_Bit4 --> Chip 6
-  //#define SS_A4 PORTB_Bit3 --> PORTB_Bit3 --> Chip 7
-  //#define SS_E4 PORTB_Bit0 --> PORTB_Bit4 --> Chip 8
-  //#define SS_A5 PORTD_Bit4 --> PORTE_Bit5 --> Chip 9
-  //#define SS_E5 PORTB_Bit4 --> PORTB_Bit0 --> Chip 10
-  //#define SS_MX PORTD_Bit5 --> PORTE_Bit4 --> Chip 11
-  //#define SS_MY PORTD_Bit6 --> PORTE_Bit3 --> Chip 12
-  //#define SS_MZ PORTD_Bit7 --> PORTE_Bit2 --> Chip 13
+//We need to initialize all 13 DAC chips. drive low, initialize, drive high, move on to the next one
+//#define SS_A1 PORTE_Bit3 --> PORTD_Bit4 --> Chip 1
+//#define SS_E1 PORTE_Bit2 --> PORTD_Bit6 --> Chip 2
+//#define SS_A2 PORTE_Bit5 --> PORTD_Bit2 --> Chip 3
+//#define SS_E2 PORTE_Bit4 --> PORTD_Bit3 --> Chip 4
+//#define SS_A3 PORTE_Bit7 --> PORTG_Bit3 --> Chip 5
+//#define SS_E3 PORTE_Bit6 --> PORTG_Bit4 --> Chip 6
+//#define SS_A4 PORTB_Bit3 --> PORTB_Bit3 --> Chip 7
+//#define SS_E4 PORTB_Bit0 --> PORTB_Bit4 --> Chip 8
+//#define SS_A5 PORTD_Bit4 --> PORTE_Bit5 --> Chip 9
+//#define SS_E5 PORTB_Bit4 --> PORTB_Bit0 --> Chip 10
+//#define SS_MX PORTD_Bit5 --> PORTE_Bit4 --> Chip 11
+//#define SS_MY PORTD_Bit6 --> PORTE_Bit3 --> Chip 12
+//#define SS_MZ PORTD_Bit7 --> PORTE_Bit2 --> Chip 13
  
-  //For some reason, chip selecting needs to be done inside the same C function that sends the data (LTC2630_Send).
-  //To overcome this obstacle, made LTC2630_send into a new format. 
+//Determined chip selecting needs to be done inside the same C function that sends the data (LTC2630_Send).
+//To overcome this obstacle, made LTC2630_send into a new format. 
  
   LTC2630_send(8,0x00,0x00,1); 
   LTC2630_send(8,0x00,0x00,2);          
