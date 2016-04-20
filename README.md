@@ -10,8 +10,8 @@ LTC2630 Digital-Analog Converter (13x)
 Simulator PCB (1x) created in Altium Designer v13.2
 See documentation folder for details
 
-![](raw/pcb.png "Simulator PCB"
-![](raw/schematic.png "Simulator Schematic"
+![](raw/pcb.png "Simulator PCB")
+![](raw/schematic.png "Simulator Schematic")
 
 #Embedded
 Embedded code was compiled with IAR Embedded Workbench IDE v6.7.  
