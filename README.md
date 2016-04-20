@@ -3,7 +3,8 @@ MATLAB/Embedded C software for the ADCS sensor simulator for KAUSAT-5, a 3U Cube
 
 #Hardware
 ATMega128 (1x as simulator unit, 1x as MASTER for simulator verification)  
-LTC2630 Digital-Analog Converter (13x)
+LTC2630 Digital-Analog Converter (13x)  
+See documentation for details
 
 #Embedded
 Embedded code was compiled with IAR Embedded Workbench IDE v6.7.  
@@ -17,3 +18,6 @@ To see individual .c and .h files, go to Embedded/SLAVE311/standard
 #MASTER
 To open in IAREW, open MASTER315.eww in Embedded/MASTER315  
 To see individual .c and .h files, go to Embedded/MASTER315
+
+#KAUSAT-5
+Lab's Facebook - https://www.facebook.com/ssrlmm/
