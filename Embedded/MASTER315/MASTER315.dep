@@ -6,19 +6,6 @@
   <configuration>
     <name>Debug</name>
     <outputs>
-      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
-      <file>$TOOLKIT_DIR$\inc\ioavr.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\MASTER315.pbd</file>
-      <file>$PROJ_DIR$\MASTER_MAIN.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\bitdefinitions\iom128.inc</file>
-      <file>$PROJ_DIR$\TWI_Master.c</file>
-      <file>$TOOLKIT_DIR$\inc\clib\stdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\iom128.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$TOOLKIT_DIR$\inc\inavr.h</file>
-      <file>$PROJ_DIR$\Debug\Exe\MASTER315.dbg</file>
       <file>$PROJ_DIR$\Debug\Obj\MASTER_MAIN.r90</file>
       <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
       <file>$TOOLKIT_DIR$\inc\clib\stdarg.h</file>
@@ -33,74 +20,26 @@
       <file>$PROJ_DIR$\MASTER_TWI.h</file>
       <file>$PROJ_DIR$\Debug\Obj\MASTER_MAIN.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\MASTER_TWI.pbi</file>
+      <file>$PROJ_DIR$\MASTER_MAIN.c</file>
+      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
+      <file>$TOOLKIT_DIR$\inc\ioavr.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\MASTER315.pbd</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
+      <file>$TOOLKIT_DIR$\inc\inavr.h</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$TOOLKIT_DIR$\inc\iom128.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\stdio.h</file>
+      <file>$PROJ_DIR$\TWI_Master.c</file>
+      <file>$TOOLKIT_DIR$\inc\bitdefinitions\iom128.inc</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Debug\Exe\MASTER315.dbg</file>
     </outputs>
-    <file>
-      <name>$PROJ_DIR$\MASTER_MAIN.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 25</file>
-        </tool>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 13</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 1 8 0 5 11 14 7 15 17 23 24</file>
-        </tool>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 1 8 0 5 11 14 7 15 17 23 24</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4</file>
-        </tool>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 9</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 1 8 0 5 11 14 7 15 17 6 20</file>
-        </tool>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 1 8 0 5 11 14 7 15 17 6 20</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Debug\Exe\MASTER315.dbg</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 18</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 22 21 13 19</file>
-        </tool>
-      </inputs>
-    </file>
     <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 18 12</file>
+          <file> 5 26</file>
         </tool>
       </outputs>
     </file>
@@ -109,17 +48,78 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 26</file>
+          <file> 13</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 16</file>
+          <file> 3</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 1 8 0 5 11 14 24</file>
+          <file> 16 21 15 24 19 1 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\MASTER_MAIN.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12</file>
+        </tool>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 0</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 16 21 15 24 19 1 22 2 4 10 11</file>
+        </tool>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 16 21 15 24 19 1 22 2 4 10 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25</file>
+        </tool>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 18</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 16 21 15 24 19 1 22 2 4 23 7</file>
+        </tool>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 16 21 15 24 19 1 22 2 4 23 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\MASTER315.dbg</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 9 8 0 6</file>
         </tool>
       </inputs>
     </file>
