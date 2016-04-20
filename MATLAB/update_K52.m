@@ -1,12 +1,11 @@
-%% Metadata  
-    %  update_K52.m
-    %  KAUSAT-5 Sensor Simulator
-    %
-    %  Copyright (c) 2016 Matt D'Arcy.
-    %  Shared under the MIT License.
-    %
+%  update_K52.m
+%  KAUSAT-5 Sensor Simulator
+%
+%  Copyright (c) 2016 Matt D'Arcy.
+%  Shared under the MIT License.
+%
+%% Processing data for serial output
 
-%% Processing data for serial communications
 function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,sunsensor4,sunsensor5,Kausat5)
     %clc
     global sundata
@@ -20,12 +19,14 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
     global packet
     curTime = datestr(event.Data.time, 'dd mmm yyyy HH:MM:SS.FFF');
       
-    % Two functions make variables out of a line of each text files.
+% Two functions make variables out of a line of each text files.
+
     [epsec, x_pos, y_pos, z_pos, x_vel, y_vel, z_vel] = get_posvel_data(fid);
     [epsec, q1, q2, q3, q4] = get_attitude_data(fid2);
     curTime = datestr((now), 'dd mmm yyyy HH:MM:SS.FFF');
        
-    % The variables are fed into STK.
+% The variables are fed into STK.
+
     Kausat5.Propagator.PointBuilder.ECI.Add(curTime,...
     str2double(x_pos), str2double(y_pos), str2double(z_pos),...
     str2double(x_vel), str2double(y_vel), str2double(z_vel));
@@ -35,10 +36,10 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
    
 %% Sun Sensor Data
  
-    % AzEl data is desired for each sun sensor. Regardless of placement or orientation,
-    % the +X axis of each sensor's body axis in STK was chosen as zero for
-    % azimuth. Azimuth increases in the direction toward the +Y axis all
-    % the way up to 360 (+X again). Elevation increases toward the +Z axis.
+% AzEl data is desired for each sun sensor. Regardless of placement or orientation,
+% the +X axis of each sensor's body axis in STK was chosen as zero for
+% azimuth. Azimuth increases in the direction toward the +Y axis all
+% the way up to 360 (+X again). Elevation increases toward the +Z axis.
  
     sunsensor1azel = sunsensor1.DataProviders.Item('Vectors(Body)').Group.Item('Sun');
     Elems = {'Time';'x/Magnitude';'y/Magnitude';'z/Magnitude'};
@@ -75,7 +76,7 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
     suny5 = cell2mat(Results.DataSets.GetDataSetByName('y/Magnitude').GetValues);
     sunz5 = cell2mat(Results.DataSets.GetDataSetByName('z/Magnitude').GetValues);
      
-    % Convert sunsensor unit vectors into azimuth, elevation, and range
+% Convert sunsensor unit vectors into azimuth, elevation, and range
         
     [a1, e1, r1] = cart2sph(sunx1,suny1,sunz1);
     [a2, e2, r2] = cart2sph(sunx2,suny2,sunz2);
@@ -89,12 +90,12 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
     AzEl4 = [a4, e4, r4];
     AzEl5 = [a5, e5, r5];
      
-    % We have Az and El in radians for every sensor every second unformatted.
-    % We combine them into a single matrix to loop with later.
+% We have Az and El in radians for every sensor every second unformatted.
+% We combine them into a single matrix to loop with later.
      
     AzElall = [a1 e1;a2 e2;a3 e3;a4 e4;a5 e5];
         
-    % Each matrix element is called out as its own variable for string operations.
+% Each matrix element is called out as its own variable for string operations.
         
     Az1 = AzElall(1,1);
     El1 = AzElall(1,2);
@@ -109,26 +110,26 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
         
 %% Constrain for solar intensity (is it in the Earth's shadow?), and cone width of sensor (what it can actually see)
  
-    % The sun sensors need sunlight to see anything! Thus, in the Earth's
-    % shadow, or total darkness (umbra), solar intensity is zero. Solar
-    % intensity is on a scale from 0.00 to 1.00. At the transition from
-    % Umbra to Penumbra, solar intensity rises from 0.00 as the shadow %
-    % lowers from 100%. The sum of both decimals is equal to 1. The
-    % criterion for solar sensor measurability is if the satellite is
-    % experiencing a solar intensity of anything above 0.00.
+% The sun sensors need sunlight to see anything! Thus, in the Earth's
+% shadow, or total darkness (umbra), solar intensity is zero. Solar
+% intensity is on a scale from 0.00 to 1.00. At the transition from
+% Umbra to Penumbra, solar intensity rises from 0.00 as the shadow %
+% lowers from 100%. The sum of both decimals is equal to 1. The
+% criterion for solar sensor measurability is if the satellite is
+% experiencing a solar intensity of anything above 0.00.
  
-    % The sun sensors have a cone width as displayed in 3D graphics of
-    % 45. As boresight (bisection of the cone) is the baseline for basing
-    % the angle to the sun vector for each sensor, any angles that deviate
-    % more than 45 degrees from the maximum elevation of 90 degrees will
-    % be treated as unreadable. It is undesirable to actually tell the system that the angle 
-    % is zero, since an angle of 50 would then lead the controller to try
-    % and correct for the 50 degree angle thinking it was zero.
+% The sun sensors have a cone width as displayed in 3D graphics of
+% 45. As boresight (bisection of the cone) is the baseline for basing
+% the angle to the sun vector for each sensor, any angles that deviate
+% more than 45 degrees from the maximum elevation of 90 degrees will
+% be treated as unreadable. It is undesirable to actually tell the system that the angle 
+% is zero, since an angle of 50 would then lead the controller to try
+% and correct for the 50 degree angle thinking it was zero.
     
-    % Since the scenario operates second-by-second, the
-    % system will trigger ignorance of sun angle if the offset from the
-    % boresight is greater than 45 degrees.  
-    
+% Since the scenario operates second-by-second, the
+% system will trigger ignorance of sun angle if the offset from the
+% boresight is greater than 45 degrees.  
+
     sunsensor1cone = sunsensor1.DataProviders.Item('Angles').Group.Item('Sun');
     Elems = {'Time';'Angle'};
     Results =  sunsensor1cone.ExecElements(curTime,curTime,1,Elems);
@@ -163,12 +164,12 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
 
 %% Format the AzEl numbers into consistent strings
     
-    % STK-MATLAB spits out Azimuth values as values from  -Pi to Pi radians and deviance
-    % angle from boresight-vector to sun-vector as values from 0 to Pi/4
-    % radians. Yet, the real sensor's azimuth and elevation values will be
-    % 0 to 2Pi radians and Pi/4 to Pi/2 radians, respectively. For azimuth,
-    % always add Pi to all non-nulls. For elevation, if the sun IS seen,
-    % the actual elevation reading should be (Pi/2)-deviation.
+% STK-MATLAB spits out Azimuth values as values from  -Pi to Pi radians and deviance
+% angle from boresight-vector to sun-vector as values from 0 to Pi/4
+% radians. Yet, the real sensor's azimuth and elevation values will be
+% 0 to 2Pi radians and Pi/4 to Pi/2 radians, respectively. For azimuth,
+% always add Pi to all non-nulls. For elevation, if the sun IS seen,
+% the actual elevation reading should be (Pi/2)-deviation.
     
     Az1abs = Az1+pi;
     Az2abs = Az2+pi;
@@ -241,7 +242,7 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
 %           El5abs = El5;
 %       end
    
-    % Always maintain 4 decimals and 1 integer.
+% Always maintain 4 decimals and 1 integer.
         
     formatSpec1 = '%06.4f';
     az1f = num2str(Az1abs,formatSpec1);
@@ -255,17 +256,16 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
     az5f = num2str(Az5abs,formatSpec1);
     el5f = num2str(El5abs,formatSpec1);
 
-    % Run through checks for each angle. If solar intensity is ever zero,
-    % null. If angle is ever greater than 45, null. Solar intensity must
-    % be greater than zero and deviance angle must be less than or equal to 45 in order to not
-    % be null. A null set is going to be denoted with a ? sign in the tenths 
-    % decimal place of each value. For determination of eclipse status,
-    % signs of all AzEl in packets are made - if eclipse and + if in sun.
-    % This is possible because null values have the '?' and seen values are
-    % always positive.
+% Run through checks for each angle. If solar intensity is ever zero,
+% null. If angle is ever greater than 45, null. Solar intensity must
+% be greater than zero and deviance angle must be less than or equal to 45 in order to not
+% be null. A null set is going to be denoted with a ? sign in the tenths 
+% decimal place of each value. For determination of eclipse status,
+% signs of all AzEl in packets are made - if eclipse and + if in sun.
+% This is possible because null values have the '?' and seen values are
+% always positive.
 
-
-    if (solint == 0) && (angle1 > 45)
+        if (solint == 0) && (angle1 > 45)
             az11 = sprintf('%s','0.?000');
             el11 = sprintf('%s','0.?000');
         elseif (solint > 0) && (angle1 > 45)
@@ -340,205 +340,205 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
         
 %% Setup format for sun sensor data.
  
-    % Need to display + sign if it is not present. Alternately, give the - 
-    % sign since they were made absolute earlier. Also add the tags. If the
-    % data snippet was nullified, callout az## and el##. If it was not
-    % nullified, callout az##actual and el##actual. 
+% Need to display + sign if it is not present. Alternately, give the - 
+% sign since they were made absolute earlier. Also add the tags. If the
+% data snippet was nullified, callout az## and el##. If it was not
+% nullified, callout az##actual and el##actual. 
     
             % SEEN?            SEEN?            SIGN?
         if (solint == 0) && (angle1 > 45) && (Az1 >= 0)      %null
-            az111 = sprintf('%s',',-',az11);                   %null
+            az111 = sprintf('%s',',-',az11);                 %null
         elseif (solint == 0) && (angle1 > 45) && (Az1 < 0)   %null
-            az111 = sprintf('%s',',-',az11);                   %null
+            az111 = sprintf('%s',',-',az11);                 %null
         elseif (solint == 0) && (angle1 <= 45) && (Az1 > 0)  %null
-            az111 = sprintf('%s',',-',az11);                   %null
+            az111 = sprintf('%s',',-',az11);                 %null
         elseif (solint == 0) && (angle1 <= 45) && (Az1 < 0)  %null
-            az111 = sprintf('%s',',-',az11);                   %null
+            az111 = sprintf('%s',',-',az11);                 %null
         elseif (solint > 0) && (angle1 > 45) && (Az1 >= 0)   %null
-            az111 = sprintf('%s',',+',az11);                   %null
+            az111 = sprintf('%s',',+',az11);                 %null
         elseif (solint > 0) && (angle1 > 45) && (Az1 < 0)    %null
-            az111 = sprintf('%s',',+',az11);                   %null
+            az111 = sprintf('%s',',+',az11);                 %null
         elseif (solint > 0) && (angle1 <= 45) && (Az1 >= 0)  %value
-            az111 = sprintf('%s',',+',az11actual);             %value
+            az111 = sprintf('%s',',+',az11actual);           %value
         elseif (solint > 0) && (angle1 <= 45) && (Az1 < 0)   %value
-            az111 = sprintf('%s',',+',az11actual);             %value
+            az111 = sprintf('%s',',+',az11actual);           %value
         end
         
            % SEEN?            SEEN?            SIGN?
         if (solint == 0) && (angle1 > 45) && (El1 >= 0)      %null
-            el111 = sprintf('%s',',-',el11);                   %null
+            el111 = sprintf('%s',',-',el11);                 %null
         elseif (solint == 0) && (angle1 > 45) && (El1 < 0)   %null
-            el111 = sprintf('%s',',-',el11);                   %null
+            el111 = sprintf('%s',',-',el11);                 %null
         elseif (solint == 0) && (angle1 <= 45) && (El1 > 0)  %null
-            el111 = sprintf('%s',',-',el11);                   %null
+            el111 = sprintf('%s',',-',el11);                 %null
         elseif (solint == 0) && (angle1 <= 45) && (El1 < 0)  %null
-            el111 = sprintf('%s',',-',el11);                   %null
+            el111 = sprintf('%s',',-',el11);                 %null
         elseif (solint > 0) && (angle1 > 45) && (El1 >= 0)   %null
-            el111 = sprintf('%s',',+',el11);                   %null
+            el111 = sprintf('%s',',+',el11);                 %null
         elseif (solint > 0) && (angle1 > 45) && (El1 < 0)    %null
-            el111 = sprintf('%s',',+',el11);                   %null
+            el111 = sprintf('%s',',+',el11);                 %null
         elseif (solint > 0) && (angle1 <= 45) && (El1 >= 0)  %value
-            el111 = sprintf('%s',',+',el11actual);             %value
+            el111 = sprintf('%s',',+',el11actual);           %value
         elseif (solint > 0) && (angle1 <= 45) && (El1 < 0)   %value
-            el111 = sprintf('%s',',+',el11actual);             %value
+            el111 = sprintf('%s',',+',el11actual);           %value
         end
          
  
           % SEEN?            SEEN?            SIGN?
         if (solint == 0) && (angle2 > 45) && (Az2 >= 0)      %null
-            az222 = sprintf('%s',',-',az22);                   %null
+            az222 = sprintf('%s',',-',az22);                 %null
         elseif (solint == 0) && (angle2 > 45) && (Az2 < 0)   %null
-            az222 = sprintf('%s',',-',az22);                   %null
+            az222 = sprintf('%s',',-',az22);                 %null
         elseif (solint == 0) && (angle2 <= 45) && (Az2 > 0)  %null
-            az222 = sprintf('%s',',-',az22);                   %null
+            az222 = sprintf('%s',',-',az22);                 %null
         elseif (solint == 0) && (angle2 <= 45) && (Az2 < 0)  %null
-            az222 = sprintf('%s',',-',az22);                   %null
+            az222 = sprintf('%s',',-',az22);                 %null
         elseif (solint > 0) && (angle2 > 45) && (Az2 >= 0)   %null
-            az222 = sprintf('%s',',+',az22);                   %null
+            az222 = sprintf('%s',',+',az22);                 %null
         elseif (solint > 0) && (angle2 > 45) && (Az2 < 0)    %null
-            az222 = sprintf('%s',',+',az22);                   %null
+            az222 = sprintf('%s',',+',az22);                 %null
         elseif (solint > 0) && (angle2 <= 45) && (Az2 >= 0)  %value
-            az222 = sprintf('%s',',+',az22actual);             %value
+            az222 = sprintf('%s',',+',az22actual);           %value
         elseif (solint > 0) && (angle2 <= 45) && (Az2 < 0)   %value
-            az222 = sprintf('%s',',+',az22actual);             %value
+            az222 = sprintf('%s',',+',az22actual);           %value
         end
         
            % SEEN?            SEEN?            SIGN?
         if (solint == 0) && (angle2 > 45) && (El2 >= 0)      %null
-            el222 = sprintf('%s',',-',el22);                   %null
+            el222 = sprintf('%s',',-',el22);                 %null
         elseif (solint == 0) && (angle2 > 45) && (El2 < 0)   %null
-            el222 = sprintf('%s',',-',el22);                   %null
+            el222 = sprintf('%s',',-',el22);                 %null
         elseif (solint == 0) && (angle2 <= 45) && (El2 > 0)  %null
-            el222 = sprintf('%s',',-',el22);                   %null
+            el222 = sprintf('%s',',-',el22);                 %null
         elseif (solint == 0) && (angle2 <= 45) && (El2 < 0)  %null
-            el222 = sprintf('%s',',-',el22);                   %null
+            el222 = sprintf('%s',',-',el22);                 %null
         elseif (solint > 0) && (angle2 > 45) && (El2 >= 0)   %null
-            el222 = sprintf('%s',',+',el22);                   %null
+            el222 = sprintf('%s',',+',el22);                 %null
         elseif (solint > 0) && (angle2 > 45) && (El2 < 0)    %null
-            el222 = sprintf('%s',',+',el22);                   %null
+            el222 = sprintf('%s',',+',el22);                 %null
         elseif (solint > 0) && (angle2 <= 45) && (El2 >= 0)  %value
-            el222 = sprintf('%s',',+',el22actual);             %value
+            el222 = sprintf('%s',',+',el22actual);           %value
         elseif (solint > 0) && (angle2 <= 45) && (El2 < 0)   %value
-            el222 = sprintf('%s',',+',el22actual);             %value
+            el222 = sprintf('%s',',+',el22actual);           %value
         end
  
  
  
             % SEEN?            SEEN?            SIGN?
         if (solint == 0) && (angle3 > 45) && (Az3 >= 0)      %null
-            az333 = sprintf('%s',',-',az33);                   %null
+            az333 = sprintf('%s',',-',az33);                 %null
         elseif (solint == 0) && (angle3 > 45) && (Az3 < 0)   %null
-            az333 = sprintf('%s',',-',az33);                   %null
+            az333 = sprintf('%s',',-',az33);                 %null
         elseif (solint == 0) && (angle3 <= 45) && (Az3 > 0)  %null
-            az333 = sprintf('%s',',-',az33);                   %null
+            az333 = sprintf('%s',',-',az33);                 %null
         elseif (solint == 0) && (angle3 <= 45) && (Az3 < 0)  %null
-            az333 = sprintf('%s',',-',az33);                   %null
+            az333 = sprintf('%s',',-',az33);                 %null
         elseif (solint > 0) && (angle3 > 45) && (Az3 >= 0)   %null
-            az333 = sprintf('%s',',+',az33);                   %null
+            az333 = sprintf('%s',',+',az33);                 %null
         elseif (solint > 0) && (angle3 > 45) && (Az3 < 0)    %null
-            az333 = sprintf('%s',',+',az33);                   %null
+            az333 = sprintf('%s',',+',az33);                 %null
         elseif (solint > 0) && (angle3 <= 45) && (Az3 >= 0)  %value
-            az333 = sprintf('%s',',+',az33actual);             %value
+            az333 = sprintf('%s',',+',az33actual);           %value
         elseif (solint > 0) && (angle3 <= 45) && (Az3 < 0)   %value
-            az333 = sprintf('%s',',+',az33actual);             %value
+            az333 = sprintf('%s',',+',az33actual);           %value
         end
         
            % SEEN?            SEEN?            SIGN?
         if (solint == 0) && (angle3 > 45) && (El3 >= 0)      %null
-            el333 = sprintf('%s',',-',el33);                   %null
+            el333 = sprintf('%s',',-',el33);                 %null
         elseif (solint == 0) && (angle3 > 45) && (El3 < 0)   %null
-            el333 = sprintf('%s',',-',el33);                   %null
+            el333 = sprintf('%s',',-',el33);                 %null
         elseif (solint == 0) && (angle3 <= 45) && (El3 > 0)  %null
-            el333 = sprintf('%s',',-',el33);                   %null
+            el333 = sprintf('%s',',-',el33);                 %null
         elseif (solint == 0) && (angle3 <= 45) && (El3 < 0)  %null
-            el333 = sprintf('%s',',-',el33);                   %null
+            el333 = sprintf('%s',',-',el33);                 %null
         elseif (solint > 0) && (angle3 > 45) && (El3 >= 0)   %null
-            el333 = sprintf('%s',',+',el33);                   %null
+            el333 = sprintf('%s',',+',el33);                 %null
         elseif (solint > 0) && (angle3 > 45) && (El3 < 0)    %null
-            el333 = sprintf('%s',',+',el33);                   %null
+            el333 = sprintf('%s',',+',el33);                 %null
         elseif (solint > 0) && (angle3 <= 45) && (El3 >= 0)  %value
-            el333 = sprintf('%s',',+',el33actual);             %value
+            el333 = sprintf('%s',',+',el33actual);           %value
         elseif (solint > 0) && (angle3 <= 45) && (El3 < 0)   %value
-            el333 = sprintf('%s',',+',el33actual);             %value
+            el333 = sprintf('%s',',+',el33actual);           %value
         end
  
  
  
              % SEEN?            SEEN?            SIGN?
         if (solint == 0) && (angle4 > 45) && (Az4 >= 0)      %null
-            az444 = sprintf('%s',',-',az44);                   %null
+            az444 = sprintf('%s',',-',az44);                 %null
         elseif (solint == 0) && (angle4 > 45) && (Az4 < 0)   %null
-            az444 = sprintf('%s',',-',az44);                   %null
+            az444 = sprintf('%s',',-',az44);                 %null
         elseif (solint == 0) && (angle4 <= 45) && (Az4 > 0)  %null
-            az444 = sprintf('%s',',-',az44);                   %null
+            az444 = sprintf('%s',',-',az44);                 %null
         elseif (solint == 0) && (angle4 <= 45) && (Az4 < 0)  %null
-            az444 = sprintf('%s',',-',az44);                   %null
+            az444 = sprintf('%s',',-',az44);                 %null
         elseif (solint > 0) && (angle4 > 45) && (Az4 >= 0)   %null
-            az444 = sprintf('%s',',+',az44);                   %null
+            az444 = sprintf('%s',',+',az44);                 %null
         elseif (solint > 0) && (angle4 > 45) && (Az4 < 0)    %null
-            az444 = sprintf('%s',',+',az44);                   %null
+            az444 = sprintf('%s',',+',az44);                 %null
         elseif (solint > 0) && (angle4 <= 45) && (Az4 >= 0)  %value
-            az444 = sprintf('%s',',+',az44actual);             %value
+            az444 = sprintf('%s',',+',az44actual);           %value
         elseif (solint > 0) && (angle4 <= 45) && (Az4 < 0)   %value
-            az444 = sprintf('%s',',+',az44actual);             %value
+            az444 = sprintf('%s',',+',az44actual);           %value
         end
         
            % SEEN?            SEEN?            SIGN?
         if (solint == 0) && (angle4 > 45) && (El4 >= 0)      %null
-            el444 = sprintf('%s',',-',el44);                   %null
+            el444 = sprintf('%s',',-',el44);                 %null
         elseif (solint == 0) && (angle4 > 45) && (El4 < 0)   %null
-            el444 = sprintf('%s',',-',el44);                   %null
+            el444 = sprintf('%s',',-',el44);                 %null
         elseif (solint == 0) && (angle4 <= 45) && (El4 > 0)  %null
-            el444 = sprintf('%s',',-',el44);                   %null
+            el444 = sprintf('%s',',-',el44);                 %null
         elseif (solint == 0) && (angle4 <= 45) && (El4 < 0)  %null
-            el444 = sprintf('%s',',-',el44);                   %null
+            el444 = sprintf('%s',',-',el44);                 %null
         elseif (solint > 0) && (angle4 > 45) && (El4 >= 0)   %null
-            el444 = sprintf('%s',',+',el44);                   %null
+            el444 = sprintf('%s',',+',el44);                 %null
         elseif (solint > 0) && (angle4 > 45) && (El4 < 0)    %null
-            el444 = sprintf('%s',',+',el44);                   %null
+            el444 = sprintf('%s',',+',el44);                 %null
         elseif (solint > 0) && (angle4 <= 45) && (El4 >= 0)  %value
-            el444 = sprintf('%s',',+',el44actual);             %value
+            el444 = sprintf('%s',',+',el44actual);           %value
         elseif (solint > 0) && (angle4 <= 45) && (El4 < 0)   %value
-            el444 = sprintf('%s',',+',el44actual);             %value
+            el444 = sprintf('%s',',+',el44actual);           %value
         end
  
  
             % SEEN?            SEEN?            SIGN?
         if (solint == 0) && (angle5 > 45) && (Az5 >= 0)      %null
-            az555 = sprintf('%s',',-',az55);                   %null
+            az555 = sprintf('%s',',-',az55);                 %null
         elseif (solint == 0) && (angle5 > 45) && (Az5 < 0)   %null
-            az555 = sprintf('%s',',-',az55);                   %null
+            az555 = sprintf('%s',',-',az55);                 %null
         elseif (solint == 0) && (angle5 <= 45) && (Az5 > 0)  %null
-            az555 = sprintf('%s',',-',az55);                   %null
+            az555 = sprintf('%s',',-',az55);                 %null
         elseif (solint == 0) && (angle5 <= 45) && (Az5 < 0)  %null
-            az555 = sprintf('%s',',-',az55);                   %null
+            az555 = sprintf('%s',',-',az55);                 %null
         elseif (solint > 0) && (angle5 > 45) && (Az5 >= 0)   %null
-            az555 = sprintf('%s',',+',az55);                   %null
+            az555 = sprintf('%s',',+',az55);                 %null
         elseif (solint > 0) && (angle5 > 45) && (Az5 < 0)    %null
-            az555 = sprintf('%s',',+',az55);                   %null
+            az555 = sprintf('%s',',+',az55);                 %null
         elseif (solint > 0) && (angle5 <= 45) && (Az5 >= 0)  %value
-            az555 = sprintf('%s',',+',az55actual);             %value
+            az555 = sprintf('%s',',+',az55actual);           %value
         elseif (solint > 0) && (angle5 <= 45) && (Az5 < 0)   %value
-            az555 = sprintf('%s',',+',az55actual);             %value
+            az555 = sprintf('%s',',+',az55actual);           %value
         end
         
            % SEEN?            SEEN?            SIGN?
         if (solint == 0) && (angle5 > 45) && (El5 >= 0)      %null
-            el555 = sprintf('%s',',-',el55);                   %null
+            el555 = sprintf('%s',',-',el55);                 %null
         elseif (solint == 0) && (angle5 > 45) && (El5 < 0)   %null
-            el555 = sprintf('%s',',-',el55);                   %null
+            el555 = sprintf('%s',',-',el55);                 %null
         elseif (solint == 0) && (angle5 <= 45) && (El5 > 0)  %null
-            el555 = sprintf('%s',',-',el55);                   %null
+            el555 = sprintf('%s',',-',el55);                 %null
         elseif (solint == 0) && (angle5 <= 45) && (El5 < 0)  %null
-            el555 = sprintf('%s',',-',el55);                   %null
+            el555 = sprintf('%s',',-',el55);                 %null
         elseif (solint > 0) && (angle5 > 45) && (El5 >= 0)   %null
-            el555 = sprintf('%s',',+',el55);                   %null
+            el555 = sprintf('%s',',+',el55);                 %null
         elseif (solint > 0) && (angle5 > 45) && (El5 < 0)    %null
-            el555 = sprintf('%s',',+',el55);                   %null
+            el555 = sprintf('%s',',+',el55);                 %null
         elseif (solint > 0) && (angle5 <= 45) && (El5 >= 0)  %value
-            el555 = sprintf('%s',',+',el55actual);             %value
+            el555 = sprintf('%s',',+',el55actual);           %value
         elseif (solint > 0) && (angle5 <= 45) && (El5 < 0)   %value
-            el555 = sprintf('%s',',+',el55actual);             %value
+            el555 = sprintf('%s',',+',el55actual);           %value
         end
 
 
@@ -564,9 +564,9 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
     
 %% Setup format for magnetic sensor data.    
     
-    % negative signs mess with formatSpec2, and so the values are made as
-    % positive just to temporarily get rid of them. '-' signs are
-    % added in the if-elseif loops.
+% Negative signs mess with formatSpec2, and so the values are made as
+% positive just to temporarily get rid of them. '-' signs are
+% added in the if-elseif loops.
     
     if magmagx < 0
         magmagxabs = -1.*magmagx;
@@ -584,14 +584,14 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
         magmagzabs = magmagz;
     end
     
-    % format to always have 5 integers and 2 decimal places
+% Format to always have 5 integers and 2 decimal places
     
         formatSpec2 = '%08.2f';
         magmagx1 = num2str(magmagxabs,formatSpec2);
         magmagy1 = num2str(magmagyabs,formatSpec2);
         magmagz1 = num2str(magmagzabs,formatSpec2);
         
-    % format to always have a sign displayed
+% Format to always have a sign displayed
     
         if magmagx >= 0
             magmagx11 = sprintf('%s',',+',magmagx1);
@@ -631,9 +631,9 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
         
 %% Setup format for magnetic sensor data.    
     
-    % negative signs mess with formatSpec2, and so the values are made as
-    % positive just to temporarily get rid of them. '-' signs are
-    % added in the if-elseif loops.        
+% Negative signs mess with formatSpec2, and so the values are made as
+% positive just to temporarily get rid of them. '-' signs are
+% added in the if-elseif loops.        
         
         if gyromagx < 0
             gyromagxabs = -1.*gyromagx;
@@ -651,14 +651,14 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
             gyromagzabs = gyromagz;
         end
         
-   % format to always have 3 integers and 4 decimal places
+% Format to always have 3 integers and 4 decimal places
     
         formatSpec2 = '%08.4f';
         gyromagxabs1 = num2str(gyromagxabs,formatSpec2);
         gyromagyabs1 = num2str(gyromagyabs,formatSpec2);
         gyromagzabs1 = num2str(gyromagzabs,formatSpec2); 
         
-    % format to always have a sign displayed
+% Format to always have a sign displayed
     
         if gyromagx >= 0
             gyromagx11 = sprintf('%s',',+',gyromagxabs1);
@@ -681,13 +681,12 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
         
 %% Generate Packet
     
-    % Generate packet data to be send to COM port to microcontroller every 
-    % second as the following format:
+% Generate packet data to be send to COM port to microcontroller every 
+% second as the following format:
     
-    % $,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####
-    % ,_#.####,_#.####,_#####.##,_#####.##,_#####.##,_###.####,_###.####,_###.####@
+% $,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#.####,_#####.##,_#####.##,_#####.##,_###.####,_###.####,_###.####@
         
-   % For checking data integrity, combined with the newarray/oldarray scheme
+% For checking data integrity, combined with the newarray/oldarray scheme
 %    packet = sprintf('%s', '$',  num2str(sundata(1,1)),',', Az1abs,',', El1abs,',', az111, el111,...
 %                                  ',',num2str(sundata(2,1)),',', Az2abs,',', El2abs,',', az222, el222,...
 %                                  ',',num2str(sundata(3,1)),',', Az3abs,',', El3abs,',', az333, el333,...
@@ -712,12 +711,12 @@ function update_K5(obj,event,fid,fid2,root,sunsensor1,sunsensor2,sunsensor3,suns
 
 %% COM port Serial Packet Transfer
  
-    % Here we tell MATLAB that COM 3 exits, to open it, and to output the 
-    % packet via serial to COM port. 
+% Here we tell MATLAB that the COM port exits, to open it, and to output the 
+% packet via serial to COM port. 
      
      fprintf(s, '%s', packet);
    
-    % The iteration is finished and the system is commanded to do another.
-    
+% The iteration is finished, reiterate.
+
      it = it +1;
 

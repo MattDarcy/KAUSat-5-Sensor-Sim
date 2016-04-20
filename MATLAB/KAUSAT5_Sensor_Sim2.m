@@ -1,12 +1,12 @@
-%% Metadata  
-    %  KAUSAT5_Sensor_Sim2.m
-    %  KAUSAT-5 Sensor Simulator
-    %
-    %  Copyright (c) 2016 Matt D'Arcy.
-    %  Copyright (c) 2015 Seecret. Shared under the MIT License.
-    %
+%  KAUSAT5_Sensor_Sim2.m
+%  KAUSAT-5 Sensor Simulator
+%
+%  Copyright (c) 2016 Matt D'Arcy.
+%  Copyright (c) 2015 Seecret. Shared under the MIT License.
+%
 
 %% Readme
+
     % User must have following files and path referenced in code: .dae model and .anc articulation files
     % User must have additional 3 function files and 2 STK data textfiles included in path.
         
@@ -41,15 +41,17 @@
     % variables like x_pos, y_pos, q1, q2, etc. to be fed into STK. 
  
 %% Bugs/WIP 
+
     % 1) If you zoom into the 3D satellite model in STK, time slows down...
-        % Determined to be dependent on PC graphics hardware
+    %       Determined to be dependent on PC graphics hardware
     % 2) Confined to 10 minute run with MATLAB timer
-        % Stack overflow couldn't help, if you can fix this please send me a msg :)
+    %       Stack overflow couldn't help, if you can fix this please send me a msg :)
     % 3) There are considerable multi-second chunks of dataless time during
     %    some runs, while sometimes it runs smoothly. Consider running on a
     %    workhorse of a pc.
 
 %% 1) Initialization
+
     close all
     clear all
     clc
@@ -64,7 +66,8 @@
     global modeldir
     global packet
 
-% Put the modeldir path and COM here       
+% Put the modeldir path and COM here 
+
     modeldir = 'VO */Satellite/Kausat5 Model File "C:\Users\Administrator\Dropbox\! ADCS Simulator\ADCS Sensor Data Generation Project\STK-MATLAB Interface\STKfiles\kausat66.dae';
     comport = 'COM6';
     timer_reset = 1;
@@ -73,6 +76,7 @@
    
 % Use as-is for putting data packets to spreadsheet for duration of the simulation.
 % Pumps packets into newarray and oldarray each iteration
+
     global pop
     global oldarray
     global newarray
@@ -84,23 +88,28 @@
     end
      
 %% 2) Initialize Scenario 
-    % Run STK
+    
+% Run STK
+
     try
         uiapp = actxGetRunningServer('STK10.application');
     catch
         uiapp = actxserver('STK10.application');
     end
 
-    % Get the root from the personality
-    % It has two... get the second, its the newer STK Object Model Interface as
-    % documented in the STK Help
+% Get the root from the personality
+% It has two... get the second, its the newer STK Object Model Interface as
+% documented in the STK Help
+
     root = uiapp.Personality2;
 
-    % Set visible to true (show STK GUI)
+% Set visible to true (show STK GUI)
+
     uiapp.visible = 1;
 
-    % From the STK Object Root you can command every aspect of the STK GUI
-    % Close current scenario or open new one
+% From the STK Object Root you can command every aspect of the STK GUI
+% Close current scenario or open new one
+
     try
         root.CloseScenario();
         root.NewScenario('KAUSat5_Sensor_Simulation');
@@ -108,38 +117,47 @@
         root.NewScenario('KAUSat5_Sensor_Simulation');
     end
 
-    % Get the scenario root, its of type IAgScenario 
+% Get the scenario root, its of type IAgScenario 
+
     scenObj = root.CurrentScenario;
 
-    % Set the object model to expect all dates in Local Gregorian
+% Set the object model to expect all dates in Local Gregorian
+
     root.UnitPreferences.Item('DateFormat').SetCurrentUnit('LCLG');
-    % Set the object model to expect all distances in meters
+    
+% Set the object model to expect all distances in meters
+
     root.UnitPreferences.Item('Distance').SetCurrentUnit('m');
 
-    % Get the system clock time and use that to set up the scenario's start and
-    % stop time.
+% Get the system clock time and use that to set up the scenario's start and
+% stop time.
+
     tomorrow_date = datestr((now+10), 'dd mmm yyyy HH:MM:SS.FFF');
     current_date = datestr((now), 'dd mmm yyyy HH:MM:SS.FFF');               
     scenObj.Epoch = current_date;
     scenObj.StopTime = tomorrow_date;
     scenObj.StartTime = current_date;
 
-    % Set the scenario's animation properties to animate in realtime mode
+% Set the scenario's animation properties to animate in realtime mode
+
     scAnimation = scenObj.Animation;
     scAnimation.AnimStepType = 'eScRealTime';
     %scAnimation.AnimStepValue = 0.016;  % this 0.016 makes a pseudo-realtime
         
 
-    % Reset the VO window and then begin playing the animation (in realtime)
+% Reset the VO window and then begin playing the animation (in realtime)
+
     root.Rewind
     root.PlayForward
         
 %% 3) Declare KAUSAT-5
 
-    % Create KAUSAT-5 at sun synchronous 10:30 local time of descending node, 600 km orbit
+% Create KAUSAT-5 at sun synchronous 10:30 local time of descending node, 600 km orbit
+
     Kausat5 = scenObj.Children.New('eSatellite', 'KAUSat5');
    
-    % set the satellite to expect realtime position and attitude data
+% Set the satellite to expect realtime position and attitude data
+
     Kausat5.SetPropagatorType('ePropagatorRealtime');
     %Kausat5.Propagator.InitialState.Representation.AssignClassical('eCoordinateSystemICRF', 7059.14, 0, 98, 0, -2, 0);
     Kausat5.Propagator.LookAheadPropagator = 'eLookAheadTwoBody';
@@ -154,15 +172,17 @@
     Kausat5.Attitude.Duration.LookBehind = 86400.0;
 
     % set mass of the satellite
+    
     root.ExecuteCommand(['SetMass */Satellite/KAUSat5 Value 3.99']);
             
 
 %% 4) Model and Articulations
 
-    % Import model file and solar panel deployment
-    % NOTE: Articulation starttime's are in sync with computer clock.
-    % They are commented out here but may be executed by the user to extend
-    % solar panels. Note: sun sensors will not move with the panels in STK.
+% Import model file and solar panel deployment
+% NOTE: Articulation starttime's are in sync with computer clock.
+% They are commented out here but may be executed by the user to extend
+% solar panels. Note: sun sensors will not move with the panels in STK.
+
     root.ExecuteCommand(modeldir);
     root.ExecuteCommand('VO */Satellite/Kausat5 Articulate "24 Mar 2015 09:06:00.00" 2 Spanel1 Roll -90 0');
     root.ExecuteCommand('VO */Satellite/Kausat5 Articulate "24 Mar 2015 09:06:00.00" 2 Spanel2 Roll -90 0');                      
@@ -171,9 +191,10 @@
         
 %% 5) Display Vectors, shrink model, disable lighting
 
-    % Set up velocity vector, sun vector, nadir vector
-    % Scales vectors (not needed now as the satellite model is scaled at
-    % the end of this section).
+% Set up velocity vector, sun vector, nadir vector
+% Scales vectors (not needed now as the satellite model is scaled at
+% the end of this section).
+
     root.ExecuteCommand('Graphics */Satellite/Kausat5 Basic Show On Inherit Off Label Off Orbit Off');
     %root.ExecuteCommand('VO */Satellite/Kausat5 SetVectorGeometry Modify "Satellite/Kausat5 Velocity Vector" Show On ShowMagnitude On Color red MagnitudeUnits km/sec');
     %root.ExecuteCommand('VO */Satellite/Kausat5 SetVectorGeometry Modify "Satellite/Kausat5 Sun Vector" Show On');
@@ -182,23 +203,27 @@
     %root.ExecuteCommand('VO */Satellite/Kausat5 SetVectorGeometry Add "Satellite/Kausat5 Body.Y Vector" Show On');
     %root.ExecuteCommand('VO */Satellite/Kausat5 SetVectorGeometry Add "Satellite/Kausat5 Body.Z Vector" Show On');
 
-    % Shrink size of KAUSat5 to clearly see vectors of interest
+% Shrink size of KAUSat5 to clearly see vectors of interest
+
     root.ExecuteCommand('VO */Satellite/Kausat5 Articulate "4 Oct 2014 07:27:25.00" 10 body Size 1 0.025');
         
-    % Disable lighting so the satellite is visible during eclipse
+% Disable lighting so the satellite is visible during eclipse
+
     root.ExecuteCommand('VO * Lighting Show Off');
         
 %% 6) Define Sensors
 
-    % Define first sun sensor, full clock angle, 45 degree half-cone width, at
-    % the top of the satellite in the center.
+% Define first sun sensor, full clock angle, 45 degree half-cone width, at
+% the top of the satellite in the center.
+
     sunsensor1 = Kausat5.Children.New('eSensor', 'SunSensor1');
     root.ExecuteCommand('Define */Satellite/Kausat5/Sensor/SunSensor1 Conical 0.0 45 0.0 360.0');
     root.ExecuteCommand('Point */Satellite/Kausat5/Sensor/SunSensor1 Fixed AzEl 0 -90');
     root.ExecuteCommand('Location */Satellite/Kausat5/Sensor/SunSensor1 Fixed Cartesian 0 0 -2')
     root.ExecuteCommand('VO */Satellite/Kausat5/Sensor/SunSensor1 SpaceProjection Distance 5');
    
-    % Define side panel sun sensors
+% Define side panel sun sensors
+
     sunsensor2 = Kausat5.Children.New('eSensor', 'SunSensor2');
     root.ExecuteCommand('Define */Satellite/Kausat5/Sensor/SunSensor2 Conical 0.0 45 0.0 360.0');
     root.ExecuteCommand('Point */Satellite/Kausat5/Sensor/SunSensor2 Fixed AzEl 0 0');
@@ -223,7 +248,8 @@
     root.ExecuteCommand('Location */Satellite/Kausat5/Sensor/SunSensor5 Fixed Cartesian -1.3 0 2.75');
     root.ExecuteCommand('VO */Satellite/Kausat5/Sensor/SunSensor5 SpaceProjection Distance 5');
         
-    % Display sun and boresight vectors for each sensor.
+% Display sun and boresight vectors for each sensor.
+
     %root.ExecuteCommand('VO */Satellite/Kausat5/Sensor/SunSensor1 SetVectorGeometry Modify "Satellite/Kausat5/Sensor/SunSensor1 Boresight Vector" Show On');
     %root.ExecuteCommand('VO */Satellite/Kausat5/Sensor/SunSensor1 SetVectorGeometry Modify "Satellite/Kausat5/Sensor/SunSensor1 Sun Vector" Show On');
     %root.ExecuteCommand('VO */Satellite/Kausat5/Sensor/SunSensor2 SetVectorGeometry Modify "Satellite/Kausat5/Sensor/SunSensor2 Boresight Vector" Show On');
@@ -236,10 +262,11 @@
     %root.ExecuteCommand('VO */Satellite/Kausat5/Sensor/SunSensor5 SetVectorGeometry Modify "Satellite/Kausat5/Sensor/SunSensor5 Sun Vector" Show On');     
         
 %% 7) Setup realtime position and velocity display in STK 3D graphics window.
-    % This will work with sun sensors once the 'add' option is coded for
-    % each sun sensor data display.
-    % Find the J2000 Position and Velocity data display 
-    
+
+% This will work with sun sensors once the 'add' option is coded for
+% each sun sensor data display.
+% Find the J2000 Position and Velocity data display  
+
     % for i = 0:sunsensor1.VO.DataDisplay.Count-1
     %     if (strcmp(sunsensor1.VO.DataDisplay.Item(i).Name, 'SunSensor1'))
     %         posDD = sunsensor1.VO.DataDisplay.Item(i);
@@ -255,13 +282,15 @@
 
 %% 8) Text File Reading
 
-    % Open the file with all positional data
+% Open the file with all positional data
+
     fid = fopen('case1_v.e','r');
     fseek(fid, 0, 'eof');
     eof_byte = ftell(fid);
     fseek(fid, 0, 'bof');
 
-    % Open the file with all attitude data
+% Open the file with all attitude data
+
     fid2 = fopen('case1_v.a','r');
     fseek(fid2, 0, 'eof');
     eof_byte2 = ftell(fid2);
@@ -269,9 +298,10 @@
 
 %% 9) Realtime data output in MATLAB command window
 
-    % Setup a timer in Matlab that goes each second. Each second, get the
-    % time and sun sensor angles from STK and then display them in the
-    % command window.
+% Setup a timer in Matlab that goes each second. Each second, get the
+% time and sun sensor angles from STK and then display them in the
+% command window.
+
     it = 0;
     primID = 1;
     tic
@@ -288,10 +318,10 @@
     t.TimerFcn = {@update_K52, fid, fid2, root,sunsensor1,sunsensor2,sunsensor3,sunsensor4,sunsensor5,Kausat5};
     start(t)  
             
-     % Develop a code to open a figure and upon execution of the 'a' key,
-     % stop the timer operation, close the COM port, and display a
-     % confirmation dialogue to the command window.
-     
+% Develop a code to open a figure and upon execution of the 'a' key,
+% stop the timer operation, close the COM port, and display a
+% confirmation dialogue to the command window.
+
     f=figure;
     uicontrol('Style', 'text',...
     'String', 'With this figure window active, press the "a" key to stop the program. If that fails, close window and hit cntrl + c in the command window',... %replace something with the text you want
