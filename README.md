@@ -11,7 +11,7 @@ Data transfer protocols included UART, SPI, I2C.
 
 [![](raw/KAUsign.gif "Out Front of KAU")](https://www.youtube.com/watch?v=KioAFfxGl1A)
 
-![](raw/Kausat_deploy_dissect.gif "Running simulation of KAUSAT-5")
+[![](raw/Kausat_deploy_dissect.gif "Running simulation of KAUSAT-5")](https://www.youtube.com/watch?v=KioAFfxGl1A)
 
 **Hardware**
 
