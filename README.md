@@ -7,7 +7,9 @@ MATLAB/Embedded C software for the ADCS sensor simulator for KAUSAT-5, a 3U Cube
 Simulated sensors included 5x sun, x-y-x mag, and x-y-z gyro. 
 Data transfer protocols included UART, SPI, I2C.
 
-**[Check Out On YouTube](https://www.youtube.com/watch?v=KioAFfxGl1A)**
+**>>> [Check Out On YouTube](https://www.youtube.com/watch?v=KioAFfxGl1A) <<<**
+
+[![](raw/KAUsign.gif "Out Front of KAU")](https://www.youtube.com/watch?v=KioAFfxGl1A)
 
 ![](raw/Kausat_deploy_dissect.gif "Running simulation of KAUSAT-5")
 
