@@ -41,8 +41,10 @@ To see individual .c and .h files, go to Embedded/MASTER315
 
 **Final Report**
 
+The material in this repository and final report is my own and does not reflect the stance nor view of the State Department, Fulbright Korea, nor Korea Aerospace University.
+
 [![](raw/ReportPic.png "Download Final Report")](https://github.com/MattDarcy/KAUSat-5-Sensor-Sim/raw/master/Fulbright%20Final%20Paper.docx)
 
 ---
 
-© 2016 [Matt D'Arcy](http://linkedin.mathewdarcy.com), shared under the [MIT License](http://www.opensource.org/licenses/MIT).
+© 2020 [Matt D'Arcy](http://linkedin.mathewdarcy.com), shared under the [MIT License](http://www.opensource.org/licenses/MIT).
